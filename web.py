@@ -3,6 +3,8 @@ import functions
 
 todos = functions.get_todos()
 
+st.set_page_config(layout="wide")
+
 def add_todo():
     todo_local = st.session_state["new_todo"].strip()
     if todo_local:  # only add if not empty
@@ -10,8 +12,15 @@ def add_todo():
         functions.write_todos(todos)
         st.session_state["new_todo"] = ""  # clear input box
 
+
 st.title("My Todo App")
 st.write("This app is to increase your productivity.")
+
+# Input box for new item
+st.text_input(label="New Todo",
+              label_visibility="collapsed",
+              placeholder= "Add new todo..",
+              on_change=add_todo, key='new_todo')
 
 # Display todos with checkboxes
 for index, todo in enumerate(todos):
@@ -21,12 +30,6 @@ for index, todo in enumerate(todos):
         functions.write_todos(todos)
         del st.session_state[todo]
         st.rerun()
-
-# Input box for new item
-st.text_input(label="New Todo",
-              label_visibility="collapsed",
-              placeholder= "Add new todo..",
-              on_change=add_todo, key='new_todo')
 
 # Clear All button with confirmation
 with st.expander("Clear All Todos"):
